@@ -1,6 +1,6 @@
 #!/bin/bash
 # Deploy jdk from tar.gz
-# mkultra23
+# author: Raymond Colebaugh
 
 FILE="$1"
 TARGET="/opt"
@@ -21,6 +21,7 @@ JAVADIR="`ls -d jdk1*`"
 
 echo "Moving to $TARGET..."
 if [ -d "${TARGET}/${JAVADIR}" ]; then
+  # TODO: add a --force|-f option
   echo "Found existing jdk install. Exiting."
   exit 1
 fi

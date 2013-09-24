@@ -2,7 +2,7 @@
 # centos_domU_grub_fix.sh
 # This script fixes the initial ram disk line in the default
 # grub menu.lst on CentOS.
-#
+# author: Raymond Colebaugh
 
 function usage {
 	echo "This script fixes a CentOS domU's GRUB configuration."
