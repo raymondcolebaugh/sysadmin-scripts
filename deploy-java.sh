@@ -32,6 +32,8 @@ echo "Removing old links to java in /usr/bin..."
 sudo rm -f /usr/bin/java{,c,ws,doc}
 echo "Creating new symbolic links..."
 sudo ln -s $JAVADIR/bin/java{,c,ws,doc} /usr/bin
+sudo ln -s $JAVADIR/bin/jdb /usr/bin
+sudo ln -s $JAVADIR/bin/jar /usr/bin
 
 # Set up environment
 echo "Checking for presence of JAVA_HOME in /etc/environment..."
