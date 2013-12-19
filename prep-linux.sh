@@ -24,9 +24,11 @@ FLAVOR=`head -1 /etc/issue | cut -d' ' -f1`
 
 # Get up to date initially...
 echo "Updating..."
-if [ "$FLAVOR" == "Debian" || "$FLAVOR" == "Raspbian" ]; then
-   echo "Enabling contrib and non-free repos..."
-   sed -i 's/^\(deb.*\)$/\1 contrib non-free/g' /etc/apt/sources.list
+if [ "$FLAVOR" == "Debian" -o "$FLAVOR" == "Raspbian" ]; then
+   if [ "$FLAVOR" == "Debian" ]; then
+      echo "Enabling contrib and non-free repos..."
+      sed -i 's/^\(deb.*\)$/\1 contrib non-free/g' /etc/apt/sources.list
+   fi
    apt-get update && apt-get upgrade -y
    apt-get install -y sudo wget curl gcc gdb make \
       build-essential libncurses5-dev subversion git \
