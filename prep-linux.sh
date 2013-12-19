@@ -1,6 +1,6 @@
 #!/bin/bash
 # Perform basic preparation for a Linux box.
-# Supported flavors: Debian (Wheezy)
+# Supported flavors: Debian (Wheezy) / Raspbian (Wheezy)
 #                    Ubuntu (Quantal)
 #                    CentOS (6)
 # Note: This is not fully unattended, you will have to be
@@ -24,16 +24,17 @@ FLAVOR=`head -1 /etc/issue | cut -d' ' -f1`
 
 # Get up to date initially...
 echo "Updating..."
-if [ "$FLAVOR" == "Debian" ]; then
+if [ "$FLAVOR" == "Debian" || "$FLAVOR" == "Raspbian" ]; then
    echo "Enabling contrib and non-free repos..."
    sed -i 's/^\(deb.*\)$/\1 contrib non-free/g' /etc/apt/sources.list
    apt-get update && apt-get upgrade -y
    apt-get install -y sudo wget curl gcc gdb make \
-      build-essential libncurses5-dev subversion git
+      build-essential libncurses5-dev subversion git \
+      puppet-common screen
 elif [ "$FLAVOR" == "Ubuntu" ]; then
    apt-get update && apt-get upgrade -y
    apt-get install -y gcc curl gdb make man-db manpages subversion \
-      git libncurses-dev
+      git libncurses-dev screen puppet-common
 elif [ "$FLAVOR" == "Centos" ]; then
    yum update -y
    yum install -y sudo wget curl bzip2 gcc gcc-c++ gdb make patch \
@@ -44,7 +45,7 @@ elif [ "$FLAVOR" == "Centos" ]; then
    yum update -y
 fi
 
-echo "Set a strong password for root! (^C to skip)"
+echo "Set a strong password for root! (^D to skip)"
 passwd
 
 # Create a user for the sysadmin
@@ -78,7 +79,7 @@ sed -i 's/^#*\(PermitRootLogin\s\)yes$/\1no/' /etc/ssh/sshd_config
 sed -i 's/^#*Protocol.*$/Protocol 2/g' /etc/ssh/sshd_config
 grep "AllowUsers" /etc/ssh/sshd_config
 if [ $? -eq 0 ]; then
-   echo "AllowUsers $USER" >> /etc/ssh/sshd_config
-else
    sed -i "s/^#*\(AllowUsers.*\)$/\1 $USER/g" /etc/ssh/sshd_config
+else
+   echo "AllowUsers $USER" >> /etc/ssh/sshd_config
 fi
