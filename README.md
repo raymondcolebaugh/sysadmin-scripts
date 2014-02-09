@@ -14,5 +14,9 @@ This is a collection of shell scripts (*bash*) to aid the sysadmin.
 
 * __latest-java.sh__: Scrapes the Oracle site to grab the Java JDK.
 
-* __prep-linux.sh__: Performs basic initial preparation for a Linux (Debian/Ubuntu, CentOS) server.
+* __prep-linux.sh__: Performs basic initial preparation for a Linux
+   (Debian/Raspbian/Ubuntu, CentOS) server.
 
+* __xen-disableswap.sh__: Iterate over a list of Xen DomUs using LVM backed
+    storage and disables their swap partition, optionally removing the logical
+    volume.
