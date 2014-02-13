@@ -46,6 +46,7 @@ for guest in $GUESTS; do
 
    # Comment out the swap entry for the domU and reassign the root disk to xvda1
    sudo sed -i '/swap/ s/^#*/#/; s/\(disk,xvda\)2/\11/' /etc/xen/${guest}.cfg
+   sudo sed -i '/root/ s/\(\/dev\/xvda\)2/\11/g' /etc/xen/${guest}.cfg
    if [ $REMOVELV -eq 1 ]; then
       sudo lvremove -f /dev/${VG}/${guest}-swap
    fi
