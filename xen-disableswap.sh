@@ -41,6 +41,7 @@ for guest in $GUESTS; do
 
    # Comment out the swap entry in fstab and reassign the root disk to xvda1
    sudo sed -i '/swap/ s/^#*/#/; s/xvda2/xvda1/' /mnt/swapdisable/etc/fstab
+   sudo sed -i 's/\(xvda\)2/\11/g' /mnt/swapdisable/boot/grub/menu.lst
    sudo umount /mnt/swapdisable
 
    # Comment out the swap entry for the domU and reassign the root disk to xvda1
