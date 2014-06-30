@@ -17,6 +17,8 @@ This is a collection of shell scripts (*bash*) to aid the sysadmin.
 * __prep-linux.sh__: Performs basic initial preparation for a Linux
    (Debian/Raspbian/Ubuntu, CentOS) server.
 
+* __vim2ide.sh__: Prepare vim for development
+
 * __xen-disableswap.sh__: Iterate over a list of Xen DomUs using LVM backed
     storage and disables their swap partition, optionally removing the logical
     volume.
