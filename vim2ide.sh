@@ -9,23 +9,27 @@ PACKAGES="vim exuberant-ctags "
 sudo apt-get install -y $PACKAGES
 
 # Download more plugins
-mkdir -p ~/.vim/{autoload,bundle} && cd ~/.vimrc
+mkdir -p ~/.vim/{autoload,bundle} && cd ~/.vim
 curl -LSso autoload/pathogen.vim \
     https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 cd bundle
 for url in majutsushi/tagbar scrooloose/nerdtree.git tpope/vim-rails.git \
-        vim-bundler.git tpope/vim-fugitive.git rodjek/vim-puppet; do
+        tpope/vim-fugitive.git rodjek/vim-puppet tpope/vim-surround.git; do
     git clone git://github.com/${url}
 done
 
 # Get vim preferences
-for file in vimrc vimrc-x; do
-    wget https://raw.githubusercontent.com/raymondcolebaugh/dotfiles/master/${file}
-    mv $file ~/.${file}
-done
+if [ ! -f ~/.vimrc-x ]; then
+    for file in vimrc vimrc-x; do
+        wget https://raw.githubusercontent.com/raymondcolebaugh/dotfiles/master/${file}
+        mv $file ~/.${file}
+    done
+fi
 
 # Aliases
-cat >> ~/.bashrc << HERE
+grep '~/\.vimrc-x' ~/.bashrc
+if [ $? -ne 0 ]; then
+    cat >> ~/.bashrc << HERE
 
 # enable Blowfish encryption
 alias vix="vi -u ~/.vimrc-x -x"
@@ -36,4 +40,5 @@ if [ -e /usr/share/vim/vim73/macros/less.sh ]; then
 fi
 
 HERE
+fi
 
