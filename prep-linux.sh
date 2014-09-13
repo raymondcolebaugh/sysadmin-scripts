@@ -47,8 +47,14 @@ elif [ "$FLAVOR" == "CentOS" ]; then
    yum install -y sudo wget curl bzip2 gcc gcc-c++ gdb make patch \
       ncurses-devel openssh-clients subversion git tar scp tree
    echo "Enabling EPEL yum repo..."
-   wget http://mirror.steadfast.net/epel/6/i386/epel-release-6-8.noarch.rpm
-   rpm -i epel-release-6-8.noarch.rpm && rm epel-release-6-8.noarch.rpm
+   centos_version="`grep VERSION_ID /etc/os-release | cut -d\" -f 2`"
+   if [ $centos_version -eq 7 ]; then
+      wget http://mirror.us.leaseweb.net/epel/7/x86_64/e/epel-release-7-1.noarch.rpm
+      rpm -i epel-release-7-1.noarch.rpm && rm epel-release-7-1.noarch.rpm
+   elif [ $centos_version -eq 6 ]; then
+      wget http://mirror.steadfast.net/epel/6/i386/epel-release-6-8.noarch.rpm
+      rpm -i epel-release-6-8.noarch.rpm && rm epel-release-6-8.noarch.rpm
+   fi
    yum update -y
    yum install -y puppet
 fi
