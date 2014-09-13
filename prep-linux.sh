@@ -20,12 +20,12 @@ fi
 
 # Set inputs
 USER="$1"
-FLAVOR=`head -1 /etc/issue | cut -d' ' -f1`
+FLAVOR=`grep '^ID=' /etc/os-release | cut -d= -f2`
 
 # Get up to date initially...
 echo "Updating..."
-if [ "$FLAVOR" == "Debian" -o "$FLAVOR" == "Raspbian" ]; then
-   if [ "$FLAVOR" == "Debian" ]; then
+if [ "$FLAVOR" == "debian" -o "$FLAVOR" == "raspbian" ]; then
+   if [ "$FLAVOR" == "debian" ]; then
       echo "Enabling contrib and non-free repos..."
       sed -i 's/^\(deb.*\)$/\1 contrib non-free/g' /etc/apt/sources.list
       grep '^[^#].*cdrom:' /etc/apt/sources.list
@@ -38,16 +38,16 @@ if [ "$FLAVOR" == "Debian" -o "$FLAVOR" == "Raspbian" ]; then
    apt-get install -y sudo wget curl gcc gdb make \
       build-essential libncurses5-dev subversion git \
       puppet-common screen tree
-elif [ "$FLAVOR" == "Ubuntu" ]; then
+elif [ "$FLAVOR" == "ubuntu" ]; then
    apt-get update && apt-get upgrade -y
    apt-get install -y gcc curl gdb make man-db manpages subversion \
       git libncurses-dev screen puppet-common
-elif [ "$FLAVOR" == "CentOS" ]; then
+elif [ "$FLAVOR" == "centos" ]; then
    yum update -y
    yum install -y sudo wget curl bzip2 gcc gcc-c++ gdb make patch \
       ncurses-devel openssh-clients subversion git tar scp tree
    echo "Enabling EPEL yum repo..."
-   centos_version="`grep VERSION_ID /etc/os-release | cut -d\" -f 2`"
+   centos_version=`grep '^VERSION_ID=' /etc/os-release | cut -d= -f 2`
    if [ $centos_version -eq 7 ]; then
       wget http://mirror.us.leaseweb.net/epel/7/x86_64/e/epel-release-7-1.noarch.rpm
       rpm -i epel-release-7-1.noarch.rpm && rm epel-release-7-1.noarch.rpm
