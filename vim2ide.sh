@@ -5,8 +5,10 @@
 
 PACKAGES="vim exuberant-ctags "
 
-# Install necessary packages
-sudo apt-get install -y $PACKAGES
+if [ "$1" == 'install' ]; then
+    # Install necessary packages
+    sudo apt-get install -y $PACKAGES
+fi
 
 # Download more plugins
 mkdir -p ~/.vim/{autoload,bundle} && cd ~/.vim
