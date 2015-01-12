@@ -6,11 +6,13 @@
 ARCHS="x64"		# Available: x64, i586, sparc, arm
 FORMATS="tar.gz"	# Available: tar.gz, rpm, dmg, exe
 SYSTEMS="linux"		# Available: linux, solaris, windows, macosx
+JAVA_DL="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"
+JAVA_SUMS="https://www.oracle.com/webfolder/s/digest/8u25checksum.html"
 
 get_filelist() {
   # TODO: make this more resilient. i'm sure this url won't
   # be latest for long...
-  LINKS=`curl http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html | grep filepath | \
+  LINKS=`curl ${JAVA_DL} | grep filepath | \
   grep -v demos | awk '{print $7}' | cut -d'"' -f5 | \
   grep -E "$ARCHS" | grep -E "$SYSTEMS" | \
   grep -E "$FORMATS" | xargs`
@@ -18,10 +20,8 @@ get_filelist() {
 
 get_checksums() {
   # scrape the checksums page, and parse the results.
-  curl http://www.oracle.com/technetwork/java/javase/downloads/java-se-binaries-checksum-1956892.html | \
-  grep '<th>MD5 Checksum</th>' | grep jdk | \
-  ruby -e "puts STDIN.gets.gsub('</td><td>', ' ').split('<tr>')" | \
-  egrep "^<td>.*</tr> $" | sed 's/<\/*t[rd]>//g' > temp_java_sums
+  curl $JAVA_SUMS | grep jdk | \
+  sed -E 's/.*<td>(.+)<\/td><td>(.+)<\/td>.*/\1 \2/' > temp_java_sums
 }
 
 verify_sum() {
@@ -38,7 +38,7 @@ dl_and_verify() {
   verified=1
   echo " => Downloading `basename $1`"
   while [ $verified -ne 0 ]; do
-    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" $1
+    wget --header 'Cookie: oraclelicense=accept-securebackup-cookie; ' $1
     verify_sum `basename $1`
     verified="$?"
     if [ $verified -ne 0 ]; then
