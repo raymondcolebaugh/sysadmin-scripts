@@ -4,6 +4,7 @@
 # author: raymond colebaugh
 
 PACKAGES="vim exuberant-ctags "
+PATHOGEN='https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim'
 
 if [ "$1" == 'install' ]; then
     # Install necessary packages
@@ -11,12 +12,17 @@ if [ "$1" == 'install' ]; then
 fi
 
 # Download more plugins
-mkdir -p ~/.vim/{autoload,bundle} && cd ~/.vim
-curl -LSso autoload/pathogen.vim \
-    https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+if [ ! -d ~/.vim/autoload ];
+then
+    mkdir -p ~/.vim/{autoload,bundle} && cd ~/.vim
+    curl -LSso autoload/pathogen.vim ${PATHOGEN}
+else
+    cd ~/.vim
+fi
 cd bundle
 for url in majutsushi/tagbar scrooloose/nerdtree.git tpope/vim-rails.git \
-        tpope/vim-fugitive.git rodjek/vim-puppet tpope/vim-surround.git; do
+        tpope/vim-fugitive.git rodjek/vim-puppet tpope/vim-surround.git \
+        scrooloose/syntastic.git; do
     git clone git://github.com/${url}
 done
 
