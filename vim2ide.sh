@@ -22,7 +22,8 @@ fi
 cd bundle
 for url in majutsushi/tagbar scrooloose/nerdtree.git tpope/vim-rails.git \
         tpope/vim-fugitive.git rodjek/vim-puppet tpope/vim-surround.git \
-        scrooloose/syntastic.git vim-scripts/DBGp-Remote-Debugger-Interface
+        scrooloose/syntastic.git vim-scripts/DBGp-Remote-Debugger-Interface \
+        msanders/snipmate.vim vim-airline/vim-airline
 do
     expect_dir=~/.vim/bundle/`basename $url | sed 's/\.git$//'`
     if [ ! -d ${expect_dir} ]
